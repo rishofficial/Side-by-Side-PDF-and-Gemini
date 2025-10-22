@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "Side-by-Side PDF and Gemini",
+  "version": "1.4",
+  "description": "Ctrl+Shift+F for split view. Alt+Shift+G for full automation.",
+  "permissions": [
+    "activeTab",
+    "declarativeNetRequest",
+    "scripting",
+    "storage",
+    "webNavigation",
+    "notifications",
+    "clipboardWrite",
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "file:///*/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-iframes": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F"
+      },
+      "description": "Toggle the PDF and Gemini iframes"
+    },
+    "auto-click-buttons": {
+      "suggested_key": {
+        "default": "Alt+Shift+G"
+      },
+      "description": "Screenshot, Paste, and Prompt"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["copy-helper.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://gemini.google.com/*"],
+      "js": ["gemini_content.js"],
+      "all_frames": true
+    }
+  ]
+}
